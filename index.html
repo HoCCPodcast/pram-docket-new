@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Interactive 3D concept for The Everyday Dock." />
+  <title>The Everyday Dock — 3D Concept</title>
+  <link rel="stylesheet" href="/src/style.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="copy">
+      <p class="eyebrow">HOUSE OF COFFEE & CHAOS · CONCEPT</p>
+      <h1>The Everyday Dock</h1>
+      <p class="intro">
+        A modular pram dock with a flexible universal strap, magnetic phone mount
+        and a discreet side-mounted solar trickle charger.
+      </p>
+
+      <div class="controls" aria-label="Model controls">
+        <button id="explodeBtn" type="button">Exploded view</button>
+        <button id="solarBtn" type="button">Show solar flow</button>
+        <button id="resetBtn" type="button" class="secondary">Reset view</button>
+      </div>
+
+      <div class="features">
+        <article>
+          <span>01</span>
+          <div>
+            <h2>Universal flex strap</h2>
+            <p>Wraps around pram handles, trolleys, gym equipment and feeding chairs.</p>
+          </div>
+        </article>
+        <article>
+          <span>02</span>
+          <div>
+            <h2>Magnetic dock</h2>
+            <p>A one-handed phone connection with an adjustable viewing angle.</p>
+          </div>
+        </article>
+        <article>
+          <span>03</span>
+          <div>
+            <h2>Discreet solar module</h2>
+            <p>A slim panel clips to the side of the strap and trickle charges in daylight.</p>
+          </div>
+        </article>
+      </div>
+      <p class="hint">Drag to rotate · Scroll to zoom · Right-drag to pan</p>
+    </section>
+
+    <section class="viewer" aria-label="Interactive 3D model">
+      <canvas id="scene"></canvas>
+      <div class="status">
+        <span class="status-dot"></span>
+        <span id="statusText">Concept view</span>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
