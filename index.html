@@ -1,93 +1,1175 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta charset="UTF-8" />
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+
   <title>Pram Phone Dock – 3D Concept</title>
+
   <style>
-    *{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:Arial,sans-serif;background:#eee8eb}canvas{display:block}
-    #app{position:fixed;inset:0}.panel{position:fixed;z-index:2;top:20px;left:20px;max-width:360px;padding:20px;border-radius:20px;background:rgba(255,255,255,.9);box-shadow:0 14px 35px rgba(0,0,0,.12)}
-    .eyebrow{margin:0 0 7px;color:#c12669;font-size:12px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase}h1{margin:0;font-size:34px}.panel p{line-height:1.45;color:#5d5559}.buttons{display:flex;flex-wrap:wrap;gap:8px}.buttons button{border:0;border-radius:999px;padding:10px 13px;font-weight:700;background:#fff;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12);cursor:pointer}.buttons button.active{background:#c12669;color:#fff}.help{position:fixed;right:18px;bottom:18px;z-index:2;padding:10px 14px;border-radius:999px;background:rgba(255,255,255,.88);font-weight:700;color:#4d4549}.loading{position:fixed;inset:0;display:grid;place-items:center;z-index:5;background:#eee8eb;font-weight:700}
-    @media(max-width:650px){.panel{top:12px;left:12px;right:12px;max-width:none;padding:16px}.panel p.desc{display:none}.help{left:12px;right:12px;text-align:center}}
-  </style>
-</head>
-<body>
-  <div id="loading" class="loading">Loading 3D model…</div>
-  <div id="app"></div>
-  <section class="panel">
-    <p class="eyebrow">House of Coffee &amp; Chaos</p>
-    <h1>Pram Dock</h1>
-    <p class="desc">Magnetic phone dock with a flexible strap and discreet side-mounted solar trickle charger.</p>
-    <div class="buttons">
-      <button id="front">Front</button><button id="side">Solar side</button><button id="back">Back</button><button id="rotate" class="active">Auto rotate</button>
-    </div>
-  </section>
-  <div class="help">Drag to rotate · Scroll to zoom</div>
-
-  <script type="module">
-    import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js';
-    import { OrbitControls } from 'https://cdn.jsdelivr.net/npm/three@0.178.0/examples/jsm/controls/OrbitControls.js';
-
-    const app=document.getElementById('app');
-    const scene=new THREE.Scene();
-    scene.fog=new THREE.Fog(0xeee8eb,14,28);
-    const camera=new THREE.PerspectiveCamera(38,innerWidth/innerHeight,.1,100);
-    camera.position.set(8,5,11);
-    const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-    renderer.setSize(innerWidth,innerHeight);renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.shadowMap.enabled=true;renderer.outputColorSpace=THREE.SRGBColorSpace;renderer.toneMapping=THREE.ACESFilmicToneMapping;renderer.toneMappingExposure=1.1;app.appendChild(renderer.domElement);
-    const controls=new OrbitControls(camera,renderer.domElement);controls.enableDamping=true;controls.enablePan=false;controls.minDistance=6;controls.maxDistance=22;controls.target.set(0,1.5,0);controls.autoRotate=true;controls.autoRotateSpeed=1.2;
-
-    const mat=(c,r=.5,m=0)=>new THREE.MeshStandardMaterial({color:c,roughness:r,metalness:m});
-    const pink=mat(0xc12669,.42,.08), black=mat(0x171518,.35,.12), charcoal=mat(0x343034,.5,.18), silver=mat(0xc9c6c8,.22,.8), silicone=mat(0x272428,.85,.02), solar=mat(0x172a3a,.25,.58);
-    const group=new THREE.Group();scene.add(group);
-
-    function roundedBox(w,h,d,r,material){
-      const s=new THREE.Shape(),x=-w/2,y=-h/2;
-      s.moveTo(x+r,y);s.lineTo(x+w-r,y);s.quadraticCurveTo(x+w,y,x+w,y+r);s.lineTo(x+w,y+h-r);s.quadraticCurveTo(x+w,y+h,x+w-r,y+h);s.lineTo(x+r,y+h);s.quadraticCurveTo(x,y+h,x,y+h-r);s.lineTo(x,y+r);s.quadraticCurveTo(x,y,x+r,y);
-      const g=new THREE.ExtrudeGeometry(s,{depth:d,bevelEnabled:true,bevelSegments:4,bevelSize:r*.35,bevelThickness:r*.35,curveSegments:10});g.center();
-      const mesh=new THREE.Mesh(g,material);mesh.castShadow=true;mesh.receiveShadow=true;return mesh;
+    * {
+      box-sizing: border-box;
     }
 
-    const handle=new THREE.Mesh(new THREE.CylinderGeometry(.56,.56,10.5,64),silicone);handle.rotation.z=Math.PI/2;handle.position.set(0,0,-1.2);handle.castShadow=true;group.add(handle);
-    const strap=new THREE.Mesh(new THREE.TorusGeometry(.78,.22,28,90,Math.PI*1.68),pink);strap.rotation.x=Math.PI/2;strap.rotation.z=.55;strap.position.set(0,0,-1.2);strap.scale.y=1.18;group.add(strap);
-    const connector=roundedBox(2.2,1,.7,.22,pink);connector.position.set(0,.8,-.72);group.add(connector);
+    html,
+    body {
+      margin: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(
+          circle at top,
+          #faf7f8 0%,
+          #eee8eb 55%,
+          #ded7da 100%
+        );
+    }
 
-    const dock=roundedBox(3.35,4.9,.78,.42,charcoal);dock.position.set(0,3,-.35);group.add(dock);
-    const face=roundedBox(2.78,4.3,.28,.35,black);face.position.set(0,3,.18);group.add(face);
-    const ring=new THREE.Mesh(new THREE.TorusGeometry(.82,.09,24,72),silver);ring.position.set(0,3.3,.38);group.add(ring);
-    const centre=new THREE.Mesh(new THREE.CylinderGeometry(.66,.66,.12,64),black);centre.rotation.x=Math.PI/2;centre.position.set(0,3.3,.38);group.add(centre);
+    #scene-container {
+      position: fixed;
+      inset: 0;
+    }
 
-    const phone=new THREE.Group();phone.position.set(0,3.15,.73);phone.rotation.z=-.03;group.add(phone);
-    phone.add(roundedBox(3,5.85,.42,.48,black));
-    const screen=roundedBox(2.72,5.55,.08,.4,mat(0x211c21,.28,.06));screen.position.z=.25;phone.add(screen);
-    const pill=roundedBox(1.35,.18,.035,.08,black);pill.position.set(0,2.35,.32);phone.add(pill);
-    const badge=roundedBox(2.15,1.15,.035,.22,pink);badge.position.set(0,.2,.32);phone.add(badge);
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
-    const solarGroup=new THREE.Group();solarGroup.position.set(2.25,1.2,-.55);solarGroup.rotation.z=-.08;group.add(solarGroup);
-    const mount=roundedBox(.52,1.1,.52,.15,pink);mount.position.x=-.36;solarGroup.add(mount);
-    const panel=roundedBox(1.55,3.35,.25,.24,solar);solarGroup.add(panel);
-    const lineMat=new THREE.MeshBasicMaterial({color:0x7896a6,transparent:true,opacity:.75});
-    for(let i=-2;i<=2;i++){const l=new THREE.Mesh(new THREE.BoxGeometry(1.14,.018,.012),lineMat);l.position.set(0,i*.5,.15);solarGroup.add(l)}
-    for(let i=-1;i<=1;i++){const l=new THREE.Mesh(new THREE.BoxGeometry(.018,2.76,.012),lineMat);l.position.set(i*.38,0,.15);solarGroup.add(l)}
+    .information-panel {
+      position: fixed;
+      top: 24px;
+      left: 24px;
+      width: min(360px, calc(100vw - 48px));
+      padding: 22px;
+      border: 1px solid rgba(30, 30, 30, 0.08);
+      border-radius: 22px;
+      background: rgba(255, 255, 255, 0.84);
+      box-shadow: 0 18px 45px rgba(52, 35, 43, 0.12);
+      backdrop-filter: blur(14px);
+      z-index: 10;
+    }
 
-    const lightMat=new THREE.MeshStandardMaterial({color:0x50d889,emissive:0x50d889,emissiveIntensity:2});
-    const led=new THREE.Mesh(new THREE.SphereGeometry(.09,20,20),lightMat);led.position.set(0,1.22,.48);group.add(led);
+    .eyebrow {
+      margin: 0 0 8px;
+      color: #c12669;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 1.6px;
+      text-transform: uppercase;
+    }
 
-    const floor=new THREE.Mesh(new THREE.CircleGeometry(11,96),new THREE.ShadowMaterial({color:0x111111,opacity:.14}));floor.rotation.x=-Math.PI/2;floor.position.y=-2.05;floor.receiveShadow=true;scene.add(floor);
-    scene.add(new THREE.HemisphereLight(0xffffff,0x75666e,2.1));
-    const key=new THREE.DirectionalLight(0xffffff,4.5);key.position.set(6,10,8);key.castShadow=true;key.shadow.mapSize.set(2048,2048);scene.add(key);
-    const rim=new THREE.DirectionalLight(0xffdce9,2.6);rim.position.set(-5,5,-8);scene.add(rim);
+    h1 {
+      margin: 0;
+      color: #161416;
+      font-size: clamp(24px, 4vw, 38px);
+      line-height: 1;
+      letter-spacing: -1.5px;
+    }
 
-    function view(x,y,z){controls.autoRotate=false;document.getElementById('rotate').classList.remove('active');camera.position.set(x,y,z);camera.lookAt(controls.target)}
-    document.getElementById('front').onclick=()=>view(0,3.5,13);
-    document.getElementById('side').onclick=()=>view(13,3.5,1);
-    document.getElementById('back').onclick=()=>view(0,3.5,-13);
-    document.getElementById('rotate').onclick=e=>{controls.autoRotate=!controls.autoRotate;e.currentTarget.classList.toggle('active',controls.autoRotate)};
+    .description {
+      margin: 13px 0 0;
+      color: #5d5559;
+      font-size: 14px;
+      line-height: 1.5;
+    }
 
-    const clock=new THREE.Clock();
-    function animate(){requestAnimationFrame(animate);lightMat.emissiveIntensity=1.7+Math.sin(clock.getElapsedTime()*3)*.6;controls.update();renderer.render(scene,camera)}animate();
-    addEventListener('resize',()=>{camera.aspect=innerWidth/innerHeight;camera.updateProjectionMatrix();renderer.setSize(innerWidth,innerHeight)});
-    document.getElementById('loading').remove();
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 9px;
+      margin-top: 18px;
+    }
+
+    button {
+      appearance: none;
+      padding: 10px 14px;
+      border: 1px solid rgba(20, 20, 20, 0.12);
+      border-radius: 999px;
+      color: #332c30;
+      background: white;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        transform 160ms ease,
+        background 160ms ease,
+        color 160ms ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
+      background: #f7edf1;
+    }
+
+    button.active {
+      color: white;
+      background: #c12669;
+      border-color: #c12669;
+    }
+
+    .instruction {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      color: #4d4549;
+      background: rgba(255, 255, 255, 0.78);
+      box-shadow: 0 10px 30px rgba(52, 35, 43, 0.1);
+      backdrop-filter: blur(10px);
+      font-size: 13px;
+      font-weight: 700;
+      z-index: 10;
+    }
+
+    .status {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      margin-top: 15px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: #366a4c;
+      background: #e8f6ed;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #44b56e;
+      box-shadow: 0 0 10px rgba(68, 181, 110, 0.8);
+    }
+
+    #loading {
+      position: fixed;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      color: #4d4549;
+      background: #f3eef0;
+      font-weight: 700;
+      z-index: 100;
+      transition: opacity 500ms ease;
+    }
+
+    @media (max-width: 650px) {
+      .information-panel {
+        top: 14px;
+        left: 14px;
+        width: calc(100vw - 28px);
+        padding: 17px;
+      }
+
+      .description {
+        display: none;
+      }
+
+      .instruction {
+        right: 14px;
+        bottom: 14px;
+        left: 14px;
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="loading">Loading 3D concept…</div>
+
+  <div id="scene-container"></div>
+
+  <section class="information-panel">
+    <p class="eyebrow">House of Coffee &amp; Chaos</p>
+
+    <h1>Pram Dock</h1>
+
+    <p class="description">
+      A clean magnetic phone dock with a flexible silicone strap and
+      discreet side-mounted solar trickle charger.
+    </p>
+
+    <div class="status">
+      <span class="status-dot"></span>
+      Solar trickle charging
+    </div>
+
+    <div class="controls">
+      <button id="front-button" type="button">
+        Front
+      </button>
+
+      <button id="side-button" type="button">
+        Solar side
+      </button>
+
+      <button id="back-button" type="button">
+        Back
+      </button>
+
+      <button id="rotation-button" class="active" type="button">
+        Auto rotate
+      </button>
+    </div>
+  </section>
+
+  <div class="instruction">
+    Drag to rotate · Scroll to zoom
+  </div>
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.178.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.178.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from "three";
+    import { OrbitControls } from
+      "three/addons/controls/OrbitControls.js";
+
+    const container =
+      document.getElementById("scene-container");
+
+    const loadingScreen =
+      document.getElementById("loading");
+
+    const scene = new THREE.Scene();
+
+    scene.fog = new THREE.Fog(
+      0xeee8eb,
+      15,
+      30
+    );
+
+    const camera = new THREE.PerspectiveCamera(
+      38,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      100
+    );
+
+    camera.position.set(8.5, 5.3, 10.5);
+
+    const renderer = new THREE.WebGLRenderer({
+      antialias: true,
+      alpha: true
+    });
+
+    renderer.setPixelRatio(
+      Math.min(window.devicePixelRatio, 2)
+    );
+
+    renderer.setSize(
+      window.innerWidth,
+      window.innerHeight
+    );
+
+    renderer.shadowMap.enabled = true;
+
+    renderer.shadowMap.type =
+      THREE.PCFSoftShadowMap;
+
+    renderer.outputColorSpace =
+      THREE.SRGBColorSpace;
+
+    renderer.toneMapping =
+      THREE.ACESFilmicToneMapping;
+
+    renderer.toneMappingExposure = 1.1;
+
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(
+      camera,
+      renderer.domElement
+    );
+
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.06;
+    controls.enablePan = false;
+    controls.minDistance = 6;
+    controls.maxDistance = 22;
+    controls.target.set(0, 0.25, 0);
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 1.25;
+
+    const colours = {
+      charcoal: 0x232124,
+      black: 0x111012,
+      softBlack: 0x343034,
+      pink: 0xc12669,
+      lightPink: 0xf3c4d7,
+      silver: 0xc9c6c8,
+      glass: 0x17191d,
+      solarBlue: 0x172a3a,
+      solarLine: 0x6d8fa1,
+      green: 0x50d889
+    };
+
+    function material(
+      colour,
+      roughness = 0.5,
+      metalness = 0
+    ) {
+      return new THREE.MeshStandardMaterial({
+        color: colour,
+        roughness,
+        metalness
+      });
+    }
+
+    const siliconeMaterial = material(
+      colours.softBlack,
+      0.82,
+      0.02
+    );
+
+    const charcoalMaterial = material(
+      colours.charcoal,
+      0.45,
+      0.24
+    );
+
+    const blackMaterial = material(
+      colours.black,
+      0.32,
+      0.16
+    );
+
+    const silverMaterial = material(
+      colours.silver,
+      0.24,
+      0.78
+    );
+
+    const pinkMaterial = material(
+      colours.pink,
+      0.42,
+      0.08
+    );
+
+    const solarMaterial = material(
+      colours.solarBlue,
+      0.25,
+      0.55
+    );
+
+    const dock = new THREE.Group();
+
+    scene.add(dock);
+
+    function createRoundedBox(
+      width,
+      height,
+      depth,
+      radius,
+      boxMaterial
+    ) {
+      const shape = new THREE.Shape();
+
+      const x = -width / 2;
+      const y = -height / 2;
+
+      shape.moveTo(x + radius, y);
+      shape.lineTo(x + width - radius, y);
+
+      shape.quadraticCurveTo(
+        x + width,
+        y,
+        x + width,
+        y + radius
+      );
+
+      shape.lineTo(
+        x + width,
+        y + height - radius
+      );
+
+      shape.quadraticCurveTo(
+        x + width,
+        y + height,
+        x + width - radius,
+        y + height
+      );
+
+      shape.lineTo(
+        x + radius,
+        y + height
+      );
+
+      shape.quadraticCurveTo(
+        x,
+        y + height,
+        x,
+        y + height - radius
+      );
+
+      shape.lineTo(x, y + radius);
+
+      shape.quadraticCurveTo(
+        x,
+        y,
+        x + radius,
+        y
+      );
+
+      const geometry =
+        new THREE.ExtrudeGeometry(shape, {
+          depth,
+          bevelEnabled: true,
+          bevelSegments: 5,
+          steps: 1,
+          bevelSize: radius * 0.42,
+          bevelThickness: radius * 0.42,
+          curveSegments: 12
+        });
+
+      geometry.center();
+
+      const mesh = new THREE.Mesh(
+        geometry,
+        boxMaterial
+      );
+
+      mesh.castShadow = true;
+      mesh.receiveShadow = true;
+
+      return mesh;
+    }
+
+    /*
+     * PRAM HANDLEBAR
+     */
+
+    const handleGeometry =
+      new THREE.CylinderGeometry(
+        0.58,
+        0.58,
+        10.8,
+        64
+      );
+
+    const handlebar = new THREE.Mesh(
+      handleGeometry,
+      siliconeMaterial
+    );
+
+    handlebar.rotation.z = Math.PI / 2;
+    handlebar.position.set(0, 0, -1.25);
+    handlebar.castShadow = true;
+    handlebar.receiveShadow = true;
+
+    dock.add(handlebar);
+
+    /*
+     * FLEXIBLE WRAPAROUND STRAP
+     */
+
+    const strapGeometry =
+      new THREE.TorusGeometry(
+        0.77,
+        0.23,
+        32,
+        90,
+        Math.PI * 1.66
+      );
+
+    const strap = new THREE.Mesh(
+      strapGeometry,
+      pinkMaterial
+    );
+
+    strap.rotation.x = Math.PI / 2;
+    strap.rotation.z = Math.PI * 0.17;
+    strap.position.set(0, 0, -1.25);
+    strap.scale.set(1, 1.18, 1);
+    strap.castShadow = true;
+
+    dock.add(strap);
+
+    const strapConnector =
+      createRoundedBox(
+        2.35,
+        1.05,
+        0.75,
+        0.24,
+        pinkMaterial
+      );
+
+    strapConnector.position.set(
+      0,
+      0.83,
+      -0.77
+    );
+
+    dock.add(strapConnector);
+
+    /*
+     * MAGNETIC DOCK BODY
+     */
+
+    const dockBody =
+      createRoundedBox(
+        3.35,
+        4.9,
+        0.8,
+        0.42,
+        charcoalMaterial
+      );
+
+    dockBody.position.set(0, 3.03, -0.35);
+
+    dock.add(dockBody);
+
+    const dockFace =
+      createRoundedBox(
+        2.75,
+        4.28,
+        0.3,
+        0.36,
+        blackMaterial
+      );
+
+    dockFace.position.set(0, 3.03, 0.18);
+
+    dock.add(dockFace);
+
+    /*
+     * MAGNETIC CHARGING RING
+     */
+
+    const magneticRingGeometry =
+      new THREE.TorusGeometry(
+        0.83,
+        0.09,
+        24,
+        72
+      );
+
+    const magneticRing =
+      new THREE.Mesh(
+        magneticRingGeometry,
+        silverMaterial
+      );
+
+    magneticRing.position.set(
+      0,
+      3.3,
+      0.4
+    );
+
+    magneticRing.castShadow = true;
+
+    dock.add(magneticRing);
+
+    const magneticCentre =
+      new THREE.Mesh(
+        new THREE.CylinderGeometry(
+          0.68,
+          0.68,
+          0.12,
+          64
+        ),
+        blackMaterial
+      );
+
+    magneticCentre.rotation.x =
+      Math.PI / 2;
+
+    magneticCentre.position.set(
+      0,
+      3.3,
+      0.4
+    );
+
+    dock.add(magneticCentre);
+
+    /*
+     * CHARGING LIGHT
+     */
+
+    const chargingLightMaterial =
+      new THREE.MeshStandardMaterial({
+        color: colours.green,
+        emissive: colours.green,
+        emissiveIntensity: 2.3,
+        roughness: 0.35
+      });
+
+    const chargingLight =
+      new THREE.Mesh(
+        new THREE.SphereGeometry(
+          0.09,
+          24,
+          24
+        ),
+        chargingLightMaterial
+      );
+
+    chargingLight.position.set(
+      0,
+      1.25,
+      0.49
+    );
+
+    dock.add(chargingLight);
+
+    const chargingGlow =
+      new THREE.PointLight(
+        colours.green,
+        1.2,
+        2.2
+      );
+
+    chargingGlow.position.copy(
+      chargingLight.position
+    );
+
+    dock.add(chargingGlow);
+
+    /*
+     * PHONE
+     */
+
+    const phoneGroup = new THREE.Group();
+
+    phoneGroup.position.set(
+      0,
+      3.15,
+      0.73
+    );
+
+    phoneGroup.rotation.z = -0.035;
+
+    dock.add(phoneGroup);
+
+    const phoneBody =
+      createRoundedBox(
+        3,
+        5.85,
+        0.42,
+        0.48,
+        blackMaterial
+      );
+
+    phoneGroup.add(phoneBody);
+
+    const screenMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x201b20,
+        roughness: 0.28,
+        metalness: 0.08
+      });
+
+    const screen =
+      createRoundedBox(
+        2.72,
+        5.55,
+        0.08,
+        0.4,
+        screenMaterial
+      );
+
+    screen.position.z = 0.25;
+
+    phoneGroup.add(screen);
+
+    /*
+     * SCREEN DESIGN
+     */
+
+    const screenPanel =
+      createRoundedBox(
+        2.2,
+        1.2,
+        0.035,
+        0.22,
+        pinkMaterial
+      );
+
+    screenPanel.position.set(
+      0,
+      0.45,
+      0.32
+    );
+
+    phoneGroup.add(screenPanel);
+
+    const screenCircle =
+      new THREE.Mesh(
+        new THREE.CircleGeometry(
+          0.42,
+          48
+        ),
+        new THREE.MeshBasicMaterial({
+          color: colours.lightPink
+        })
+      );
+
+    screenCircle.position.set(
+      0,
+      1.65,
+      0.32
+    );
+
+    phoneGroup.add(screenCircle);
+
+    const speaker =
+      createRoundedBox(
+        0.7,
+        0.1,
+        0.04,
+        0.04,
+        blackMaterial
+      );
+
+    speaker.position.set(
+      0,
+      2.5,
+      0.32
+    );
+
+    phoneGroup.add(speaker);
+
+    /*
+     * CAMERA LENSES
+     */
+
+    const cameraBlock =
+      createRoundedBox(
+        0.78,
+        0.78,
+        0.1,
+        0.2,
+        blackMaterial
+      );
+
+    cameraBlock.position.set(
+      -0.9,
+      2.05,
+      -0.27
+    );
+
+    phoneGroup.add(cameraBlock);
+
+    const lensMaterial =
+      new THREE.MeshStandardMaterial({
+        color: 0x090a0c,
+        roughness: 0.15,
+        metalness: 0.55
+      });
+
+    [-0.19, 0.19].forEach(
+      (lensY) => {
+        const lens = new THREE.Mesh(
+          new THREE.CylinderGeometry(
+            0.16,
+            0.16,
+            0.08,
+            32
+          ),
+          lensMaterial
+        );
+
+        lens.rotation.x =
+          Math.PI / 2;
+
+        lens.position.set(
+          -0.9,
+          2.05 + lensY,
+          -0.35
+        );
+
+        phoneGroup.add(lens);
+      }
+    );
+
+    /*
+     * SIDE-MOUNTED SOLAR PANEL
+     */
+
+    const solarGroup = new THREE.Group();
+
+    solarGroup.position.set(
+      2.22,
+      1.2,
+      -0.55
+    );
+
+    solarGroup.rotation.y = -0.12;
+    solarGroup.rotation.z = -0.08;
+
+    dock.add(solarGroup);
+
+    const solarMount =
+      createRoundedBox(
+        0.55,
+        1.15,
+        0.55,
+        0.16,
+        pinkMaterial
+      );
+
+    solarMount.position.x = -0.35;
+
+    solarGroup.add(solarMount);
+
+    const solarPanel =
+      createRoundedBox(
+        1.55,
+        3.35,
+        0.25,
+        0.24,
+        solarMaterial
+      );
+
+    solarPanel.castShadow = true;
+
+    solarGroup.add(solarPanel);
+
+    const solarFace =
+      createRoundedBox(
+        1.32,
+        3.05,
+        0.045,
+        0.17,
+        new THREE.MeshStandardMaterial({
+          color: colours.solarBlue,
+          roughness: 0.22,
+          metalness: 0.62
+        })
+      );
+
+    solarFace.position.z = 0.17;
+
+    solarGroup.add(solarFace);
+
+    const gridMaterial =
+      new THREE.MeshBasicMaterial({
+        color: colours.solarLine,
+        transparent: true,
+        opacity: 0.72
+      });
+
+    for (let row = -2; row <= 2; row++) {
+      const horizontalLine =
+        new THREE.Mesh(
+          new THREE.BoxGeometry(
+            1.14,
+            0.018,
+            0.012
+          ),
+          gridMaterial
+        );
+
+      horizontalLine.position.set(
+        0,
+        row * 0.5,
+        0.207
+      );
+
+      solarGroup.add(horizontalLine);
+    }
+
+    for (
+      let column = -1;
+      column <= 1;
+      column++
+    ) {
+      const verticalLine =
+        new THREE.Mesh(
+          new THREE.BoxGeometry(
+            0.018,
+            2.76,
+            0.012
+          ),
+          gridMaterial
+        );
+
+      verticalLine.position.set(
+        column * 0.38,
+        0,
+        0.207
+      );
+
+      solarGroup.add(verticalLine);
+    }
+
+    /*
+     * MAGNET CONNECTION ON SOLAR PANEL
+     */
+
+    const solarMagnet =
+      new THREE.Mesh(
+        new THREE.CylinderGeometry(
+          0.24,
+          0.24,
+          0.13,
+          40
+        ),
+        silverMaterial
+      );
+
+    solarMagnet.rotation.z =
+      Math.PI / 2;
+
+    solarMagnet.position.set(
+      -0.86,
+      0,
+      0
+    );
+
+    solarGroup.add(solarMagnet);
+
+    /*
+     * FLOOR
+     */
+
+    const floor =
+      new THREE.Mesh(
+        new THREE.CircleGeometry(
+          11,
+          96
+        ),
+        new THREE.ShadowMaterial({
+          color: 0x1b1518,
+          opacity: 0.14
+        })
+      );
+
+    floor.rotation.x = -Math.PI / 2;
+    floor.position.y = -2.05;
+    floor.receiveShadow = true;
+
+    scene.add(floor);
+
+    /*
+     * LIGHTING
+     */
+
+    const ambientLight =
+      new THREE.HemisphereLight(
+        0xffffff,
+        0x7b6871,
+        2.1
+      );
+
+    scene.add(ambientLight);
+
+    const keyLight =
+      new THREE.DirectionalLight(
+        0xffffff,
+        4.5
+      );
+
+    keyLight.position.set(
+      6,
+      10,
+      8
+    );
+
+    keyLight.castShadow = true;
+
+    keyLight.shadow.mapSize.set(
+      2048,
+      2048
+    );
+
+    keyLight.shadow.camera.left = -10;
+    keyLight.shadow.camera.right = 10;
+    keyLight.shadow.camera.top = 10;
+    keyLight.shadow.camera.bottom = -10;
+
+    scene.add(keyLight);
+
+    const pinkLight =
+      new THREE.PointLight(
+        colours.pink,
+        2.5,
+        13
+      );
+
+    pinkLight.position.set(
+      -6,
+      3,
+      4
+    );
+
+    scene.add(pinkLight);
+
+    const rimLight =
+      new THREE.DirectionalLight(
+        0xffdce9,
+        2.8
+      );
+
+    rimLight.position.set(
+      -5,
+      5,
+      -8
+    );
+
+    scene.add(rimLight);
+
+    /*
+     * BUTTON CONTROLS
+     */
+
+    function moveCamera(
+      x,
+      y,
+      z
+    ) {
+      controls.autoRotate = false;
+
+      document
+        .getElementById("rotation-button")
+        .classList.remove("active");
+
+      const destination =
+        new THREE.Vector3(x, y, z);
+
+      const start =
+        camera.position.clone();
+
+      let progress = 0;
+
+      function animateCamera() {
+        progress += 0.045;
+
+        const eased =
+          1 - Math.pow(1 - progress, 3);
+
+        camera.position.lerpVectors(
+          start,
+          destination,
+          Math.min(eased, 1)
+        );
+
+        camera.lookAt(
+          controls.target
+        );
+
+        if (progress < 1) {
+          requestAnimationFrame(
+            animateCamera
+          );
+        }
+      }
+
+      animateCamera();
+    }
+
+    document
+      .getElementById("front-button")
+      .addEventListener(
+        "click",
+        () => moveCamera(0, 3.5, 13)
+      );
+
+    document
+      .getElementById("side-button")
+      .addEventListener(
+        "click",
+        () => moveCamera(13, 3.5, 1)
+      );
+
+    document
+      .getElementById("back-button")
+      .addEventListener(
+        "click",
+        () => moveCamera(0, 3.5, -13)
+      );
+
+    const rotationButton =
+      document.getElementById(
+        "rotation-button"
+      );
+
+    rotationButton.addEventListener(
+      "click",
+      () => {
+        controls.autoRotate =
+          !controls.autoRotate;
+
+        rotationButton.classList.toggle(
+          "active",
+          controls.autoRotate
+        );
+      }
+    );
+
+    /*
+     * ANIMATION
+     */
+
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+
+      const elapsed =
+        clock.getElapsedTime();
+
+      chargingLightMaterial.emissiveIntensity =
+        1.7 +
+        Math.sin(elapsed * 3) * 0.65;
+
+      chargingGlow.intensity =
+        1 +
+        Math.sin(elapsed * 3) * 0.25;
+
+      controls.update();
+
+      renderer.render(
+        scene,
+        camera
+      );
+    }
+
+    animate();
+
+    /*
+     * RESPONSIVE RESIZING
+     */
+
+    window.addEventListener(
+      "resize",
+      () => {
+        camera.aspect =
+          window.innerWidth /
+          window.innerHeight;
+
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(
+          window.innerWidth,
+          window.innerHeight
+        );
+      }
+    );
+
+    setTimeout(() => {
+      loadingScreen.style.opacity = "0";
+
+      setTimeout(() => {
+        loadingScreen.remove();
+      }, 550);
+    }, 500);
   </script>
 </body>
 </html>
